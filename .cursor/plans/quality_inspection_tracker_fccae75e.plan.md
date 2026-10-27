@@ -22,19 +22,19 @@ todos:
     status: completed
   - id: fe-shadcn
     content: Install Tailwind v4 + shadcn/ui, configure aliases to shared/components/ui, theme tokens, remove old CSS/Button/Input
-    status: in_progress
+    status: completed
   - id: fe-core
     content: httpClient, QueryClient provider, Toaster, real AuthContext/login, AppLayout with mobile bottom nav, routes cleanup
-    status: pending
+    status: completed
   - id: fe-inspections
     content: "Inspections feature: constants, schemas, api, query hooks, URL filter hook, form wrappers, list/card/filters/sort, resolve dialog, badges, summary grid, 3 pages"
-    status: pending
+    status: completed
   - id: fe-tests
     content: Frontend unit tests (filters hook, form validation, resolve dialog); tsc, oxlint, build pass
-    status: pending
+    status: completed
   - id: delivery
     content: Dockerfiles, root docker-compose.yml with nginx /api proxy, .env.example files, root README with decisions/assumptions/cuts
-    status: pending
+    status: in_progress
   - id: verify
     content: docker compose up and browser-verify full flow at 390px; record review section in tasks/todo.md
     status: pending

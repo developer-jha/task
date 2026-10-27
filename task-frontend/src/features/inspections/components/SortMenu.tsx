@@ -38,7 +38,7 @@ export function SortMenu({ sortBy, order, onChange }: SortMenuProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="min-w-0">
+        <Button variant="outline" className="max-w-full min-w-0 shrink">
           <ArrowUpDownIcon data-icon="inline-start" />
           <span className="sr-only">Sort: </span>
           <span className="truncate">{current?.label ?? 'Sort'}</span>
