@@ -1,53 +1,80 @@
-import { useState, type FormEvent } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useAuth } from '@/features/auth/context/AuthContext'
-import { Button } from '@/shared/components/ui/Button'
-import { Input } from '@/shared/components/ui/Input'
-import { getSafeRedirectPath } from '@/shared/lib/redirect'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2Icon } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+import { useAuth } from '@/features/auth/context/authContext'
+import {
+  DEMO_CREDENTIALS,
+  loginSchema,
+  type LoginFormValues,
+} from '@/features/auth/schemas'
+import { FormInput } from '@/shared/components/form/FormInput'
+import { FormRootError } from '@/shared/components/form/FormRootError'
+import { Button } from '@/shared/components/ui/button'
+import { applyServerErrors } from '@/shared/lib/applyServerErrors'
+
+const LOGIN_FIELDS = ['email', 'password'] as const
 
 export function LoginForm() {
   const { login } = useAuth()
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: '', password: '' },
+  })
+  const { isSubmitting, errors } = form.formState
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setError(null)
-
+  const onSubmit = form.handleSubmit(async (values) => {
     try {
-      login({ email, password })
-      navigate(getSafeRedirectPath(searchParams.get('redirect')))
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unable to sign in')
+      // On success GuestOnly redirects to the requested page.
+      await login(values)
+    } catch (error) {
+      applyServerErrors(error, form.setError, LOGIN_FIELDS)
     }
+  })
+
+  const fillDemo = () => {
+    form.reset(DEMO_CREDENTIALS)
   }
 
   return (
-    <form className="auth-form" onSubmit={handleSubmit} noValidate>
-      <Input
-        label="Email"
+    <form className="flex flex-col gap-5" onSubmit={onSubmit} noValidate>
+      <FormInput
+        control={form.control}
         name="email"
+        label="Email"
         type="email"
+        inputMode="email"
         autoComplete="email"
-        required
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
+        autoCapitalize="none"
+        placeholder="you@arvind.com"
       />
-      <Input
-        label="Password"
+      <FormInput
+        control={form.control}
         name="password"
+        label="Password"
         type="password"
         autoComplete="current-password"
-        required
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
       />
-      {error ? <p className="form-error">{error}</p> : null}
-      <Button type="submit">Sign in</Button>
-      <p className="form-hint">Demo auth: any email and password works.</p>
+      <FormRootError message={errors.root?.server?.message} />
+      <Button type="submit" size="lg" disabled={isSubmitting}>
+        {isSubmitting ? (
+          <Loader2Icon className="animate-spin" data-icon="inline-start" />
+        ) : null}
+        Sign in
+      </Button>
+      <div className="rounded-lg border border-dashed bg-secondary/50 p-3 text-sm">
+        <p className="font-medium text-secondary-foreground">Demo account</p>
+        <p className="mt-1 break-all text-muted-foreground">
+          {DEMO_CREDENTIALS.email} / {DEMO_CREDENTIALS.password}
+        </p>
+        <Button
+          type="button"
+          variant="link"
+          className="mt-1 h-control-sm px-0"
+          onClick={fillDemo}
+        >
+          Use demo credentials
+        </Button>
+      </div>
     </form>
   )
 }

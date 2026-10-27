@@ -1,24 +1,13 @@
-import { Link, Outlet } from 'react-router-dom'
-import { useAuth } from '@/features/auth/context/AuthContext'
+import { Outlet } from 'react-router-dom'
+import { BrandMark } from '@/shared/components/BrandMark'
 
 export function PublicLayout() {
-  const { isAuthenticated } = useAuth()
-
   return (
-    <div className="shell shell--public">
-      <header className="topbar">
-        <Link to="/" className="brand">
-          VFRS
-        </Link>
-        <nav className="topbar__nav">
-          {isAuthenticated ? (
-            <Link to="/dashboard">Dashboard</Link>
-          ) : (
-            <Link to="/login">Sign in</Link>
-          )}
-        </nav>
+    <div className="flex min-h-dvh flex-col bg-background">
+      <header className="flex h-topbar items-center px-4">
+        <BrandMark />
       </header>
-      <main className="shell__main">
+      <main className="flex flex-1 items-start justify-center px-4 pt-6 pb-10 md:items-center md:pt-0">
         <Outlet />
       </main>
     </div>

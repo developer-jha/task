@@ -1,11 +1,24 @@
 import { LoginForm } from '@/features/auth/components/LoginForm'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/shared/components/ui/card'
 
 export function LoginPage() {
   return (
-    <section className="page page--narrow">
-      <h1>Sign in</h1>
-      <p>Use any email and password to create a local demo session.</p>
-      <LoginForm />
-    </section>
+    <Card className="w-full max-w-sm">
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold">Sign in</CardTitle>
+        <CardDescription>
+          Log and resolve fabric inspection defects on the shop floor.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <LoginForm />
+      </CardContent>
+    </Card>
   )
 }

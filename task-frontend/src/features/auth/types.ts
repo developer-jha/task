@@ -1,8 +1,7 @@
 export type AuthUser = {
-  id: string
-  name: string
+  id: string | number
   email: string
-  role: 'user' | 'admin'
+  name: string
 }
 
 export type AuthSession = {
