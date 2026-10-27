@@ -34,10 +34,10 @@ todos:
     status: completed
   - id: delivery
     content: Dockerfiles, root docker-compose.yml with nginx /api proxy, .env.example files, root README with decisions/assumptions/cuts
-    status: in_progress
+    status: completed
   - id: verify
     content: docker compose up and browser-verify full flow at 390px; record review section in tasks/todo.md
-    status: pending
+    status: completed
 isProject: false
 ---
 
